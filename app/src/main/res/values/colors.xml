@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_fondo">#ffcfff10</color>
+    <color name="fondo_gris">#ffd1d1d1</color>
+    <color name="entintado_oscuro">#ff55ff39</color>
+    <color name="entintado_claro">#ffffffff</color>
+</resources>

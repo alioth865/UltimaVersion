@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/listview_selector">
+
+    <com.android.volley.toolbox.NetworkImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:id="@+id/iv_imagen_producto"
+        android:background="@drawable/borde"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_nombre_producto"
+        android:text="Nombre"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/iv_imagen_producto" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Referencia"
+        android:id="@+id/tv_referencia"
+        android:layout_below="@+id/tv_nombre_producto"
+        android:layout_toEndOf="@+id/iv_imagen_producto" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="id"
+        android:id="@+id/tv_id_producto"
+        android:layout_below="@+id/tv_referencia"
+        android:layout_toEndOf="@+id/iv_imagen_producto" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Elegir"
+        android:id="@+id/btn_elegir"
+        android:layout_below="@+id/tv_id_producto"
+        android:layout_alignParentEnd="true" />
+
+
+</RelativeLayout>
