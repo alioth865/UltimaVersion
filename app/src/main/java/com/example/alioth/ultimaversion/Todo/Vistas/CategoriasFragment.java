@@ -16,6 +16,7 @@ import com.example.alioth.ultimaversion.Todo.Modelo.Categoria;
 import com.example.alioth.ultimaversion.Todo.Util.FragmentIterationListener;
 import com.example.alioth.ultimaversion.Todo.Util.Utilidades;
 
+import java.io.Serializable;
 import java.util.Map;
 
 
@@ -87,6 +88,9 @@ public class CategoriasFragment extends Fragment {
         super.onDetach();
         comm = null;
     }
+
+
+
 
 
 

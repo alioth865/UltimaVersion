@@ -23,12 +23,13 @@ import com.example.alioth.ultimaversion.Todo.Modelo.Producto;
 import com.example.alioth.ultimaversion.Todo.Util.FragmentIterationListener;
 import com.example.alioth.ultimaversion.Todo.Util.Utilidades;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 
-public class BuscarProductoFragment extends Fragment {
+public class BuscarProductoFragment extends Fragment  {
     private static final String TODOS_PRODUCTOS = "todosProductos";
     private Map<Integer, Categoria> todosProductos;
     private EditText etBuscador;

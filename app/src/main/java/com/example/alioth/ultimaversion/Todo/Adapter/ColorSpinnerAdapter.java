@@ -54,11 +54,15 @@ public class ColorSpinnerAdapter extends ArrayAdapter<Color>{
         return mySpinner;
     }
 
+
+
     @Override
     public int getCount() {
         return datos.size();
     }
 
-
-
+    @Override
+    public Color getItem(int position) {
+        return datos.get(position);
+    }
 }

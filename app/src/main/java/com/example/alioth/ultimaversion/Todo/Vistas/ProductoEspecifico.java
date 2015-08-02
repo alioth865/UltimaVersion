@@ -52,6 +52,7 @@ public class ProductoEspecifico extends FragmentActivity {
             adapter.addFragment(VistaImagenFragment.newInstance(idImagen,producto.getId(),configuracion));
         }
         this.viewPager.setAdapter(adapter);
+
     }
 
 

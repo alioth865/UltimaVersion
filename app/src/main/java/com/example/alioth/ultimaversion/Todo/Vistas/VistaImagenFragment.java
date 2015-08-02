@@ -12,6 +12,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.alioth.ultimaversion.R;
 import com.example.alioth.ultimaversion.Todo.Util.MySingletonClass;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**

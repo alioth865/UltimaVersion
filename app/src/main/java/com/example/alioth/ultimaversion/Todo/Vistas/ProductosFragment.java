@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProductosFragment extends Fragment {
+public class ProductosFragment extends Fragment  {
     private FragmentIterationListener comm;
     private Categoria categoriaEspecifica;
     private ListView productosListView;
@@ -94,6 +94,8 @@ public class ProductosFragment extends Fragment {
         super.onDetach();
         comm = null;
     }
+
+
 
 
 

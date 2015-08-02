@@ -9,13 +9,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.alioth.ultimaversion.R;
 import com.example.alioth.ultimaversion.Todo.Modelo.Producto;
 import com.example.alioth.ultimaversion.Todo.Util.MySingletonClass;
-/*import com.example.alioth.ultimaversion.Todo.Util.MyInterceptor;
-import com.squareup.okhttp.Interceptor;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
-import com.squareup.picasso.OkHttpDownloader;
-import com.squareup.picasso.Picasso;*/
+
 
 import android.app.Activity;
 import android.graphics.Bitmap;

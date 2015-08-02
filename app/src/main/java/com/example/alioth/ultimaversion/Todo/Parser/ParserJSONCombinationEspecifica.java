@@ -32,6 +32,7 @@ public class ParserJSONCombinationEspecifica {
         //JSONObject combinacionJson=jsonObject.getJSONObject("combination");
         Combinacion combinacion=new Combinacion();
         combinacion.setId(combinacionJson.getInt("id"));
+        combinacion.setIdProducto(combinacionJson.getInt("id_product"));
         //combinacion.setCantidad(combinacionJson.getInt("quantity"));
         List<Integer> imagenes=new LinkedList<>();
         List<OpcionesProductos> opciones=new LinkedList<>();

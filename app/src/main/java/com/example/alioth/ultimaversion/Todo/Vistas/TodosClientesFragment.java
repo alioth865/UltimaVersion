@@ -14,9 +14,10 @@ import com.example.alioth.ultimaversion.Todo.Modelo.Categoria;
 import com.example.alioth.ultimaversion.Todo.Modelo.Cliente;
 import com.example.alioth.ultimaversion.Todo.Util.FragmentIterationListener;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class TodosClientesFragment extends Fragment {
+public class TodosClientesFragment extends Fragment  {
 
     private static final String MAP_TODOS_CLIENTES = "MAP_TODOS_CLIENTES";
     private static final String MAP_TODOS_PRODUCTOS = "MAP_TODOS_PRODUCTOS";
@@ -62,7 +63,6 @@ public class TodosClientesFragment extends Fragment {
         todoClientesListView.setAdapter(new ClientesApater(todosClientesMap.values(), todasCategoriasMap, getActivity()));
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(int idFragment, Object dato) {
         if (comm != null) {
             comm.onFragmentIteration(idFragment, dato);

@@ -9,6 +9,17 @@ import java.util.List;
 public class Combinacion implements Serializable {
     private int id;
     private int cantidad;
+    private int idProducto;
+
+
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+    }
+
     private List<Integer> idImagenes;
     private List<OpcionesProductos> opcionesProductosList;
 
@@ -44,8 +55,28 @@ public class Combinacion implements Serializable {
         this.opcionesProductosList = opcionesProductosList;
     }
 
+
     @Override
     public boolean equals(Object o) {
-        return id==((Combinacion)o).getId();
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Combinacion that = (Combinacion) o;
+
+        if (id != that.id) return false;
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        String salida="";
+        for(OpcionesProductos op:opcionesProductosList){
+            if(op instanceof Talla)
+                salida+="SIZE: "+((Talla)op).getTalla()+" ";
+            if(op instanceof Color)
+                salida+="COLOR: "+((Color)op).getNombreColor()+" ";
+        }
+        return salida;
     }
 }

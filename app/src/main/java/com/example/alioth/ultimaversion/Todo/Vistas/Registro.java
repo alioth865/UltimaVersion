@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alioth.ultimaversion.R;
@@ -50,6 +51,7 @@ public class Registro extends ActionBarActivity {
     public static final String MAP_TODOS_LOS_CLIENTES="MAP_TODOS_LOS_CLIENTES";
     public static final String CONFIGURACION="CONFIGURACION";
     Map<Integer, Cliente> mapTodosLosClientes;
+    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class Registro extends ActionBarActivity {
         setContentView(R.layout.activity_registro);
         inicializarComponente();
     }
+
+
 
     private void inicializarComponente() {
         configuracion= Utilidades.Config(getResources());
@@ -109,17 +113,18 @@ public class Registro extends ActionBarActivity {
         boolean autenticacioAceptada=false;
 
 
-        //TODO ELIMINAR DE AQUI
+
         Map<Integer, OpcionesProductos> mapTodasOpcionesProductos;
         Map<Integer, Combinacion> mapTodasLasCombinaciones;
         Map<Integer, Producto> mapTodosLosProductos;
         Map<Integer, Categoria> mapTodasLasCategorias;
 
 
+
         @Override
         protected void onProgressUpdate(Boolean... values) {
 
-                ProgressDialog.show(
+                mDialog=ProgressDialog.show(
                         Registro.this
                         , "Entrando"
                         , "Cargando los datos"
@@ -151,17 +156,7 @@ public class Registro extends ActionBarActivity {
                         break;
                     }
                 }
-                /*
-                for(int i=0;i<idEmpleados.size() && !autenticacioAceptada;i++){
-                    String urlEmpleadoEspecifico="http://"+configuracion.get("shop_url")+"/"+configuracion.get("name_shop")+"/api/employees/"+idEmpleados.get(i)+"?output_format=JSON";
-                    inputStream= Utilidades.peticionHttp(configuracion.get("key"), "", urlEmpleadoEspecifico);
-                    s= Utilidades.getStringFromInputStream(inputStream);
-                    Empleado e=new ParserJSONEmpleadoEspecifico(s).getEmpleado();
-                    if(e.getEmail().equals(usu) && e.getContraseña().equals(contraseñaencryptada)){
-                        autenticacioAceptada=true;
-                        break;
-                    }
-                }*/
+
 
                 if(autenticacioAceptada){
                     publishProgress(true);
@@ -211,6 +206,8 @@ public class Registro extends ActionBarActivity {
                 i.putExtra(MAP_TODOS_LOS_CLIENTES, (java.io.Serializable) mapTodosLosClientes);
                 i.putExtra(CONFIGURACION, (java.io.Serializable) configuracion);
                 startActivity(i);
+                Limpiar();
+
 
                 /*Toast.makeText(getApplicationContext(), "Autenticacion aceptada: "+ mapTodasOpcionesProductos.values().size()+", "
                         +mapTodasLasCombinaciones.values().size()+", "
@@ -220,6 +217,14 @@ public class Registro extends ActionBarActivity {
                 Toast.makeText(getApplicationContext(), "Usuario o contraseña no válidas", Toast.LENGTH_SHORT).show();
                 aceptar.setEnabled(true);
             }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mDialog!=null){
+            mDialog.dismiss();
         }
     }
 
@@ -250,4 +255,13 @@ public class Registro extends ActionBarActivity {
             terminoCarga=true;
         }
     }
+
+    public void Limpiar(){
+        usuario.setText("");
+        contraseña.setText("");
+        aceptar.setEnabled(true);
+
+    }
+
+
 }

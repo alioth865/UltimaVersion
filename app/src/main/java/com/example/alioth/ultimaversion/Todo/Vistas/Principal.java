@@ -10,12 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.example.alioth.ultimaversion.R;
 import com.example.alioth.ultimaversion.Todo.Modelo.Categoria;
+import com.example.alioth.ultimaversion.Todo.Modelo.Cesta;
 import com.example.alioth.ultimaversion.Todo.Modelo.Cliente;
+import com.example.alioth.ultimaversion.Todo.Modelo.Combinacion;
 import com.example.alioth.ultimaversion.Todo.Modelo.Producto;
 import com.example.alioth.ultimaversion.Todo.Util.FragmentIterationListener;
 import com.example.alioth.ultimaversion.Todo.Util.Utilidades;
@@ -31,6 +34,8 @@ public class Principal extends ActionBarActivity implements View.OnTouchListener
     private ProductosFragment productosFragment;
     private CrearPedidoFragment crearPedidoFragment;
     private BuscarProductoFragment buscarProductoFragment;
+    private Integer fragmentActual;
+    private Fragment fragmentoActualVista;
 
 
 
@@ -50,20 +55,38 @@ public class Principal extends ActionBarActivity implements View.OnTouchListener
         configuracion=(Map<String,String> )getIntent().getSerializableExtra(Registro.CONFIGURACION);
         clientesMap=(Map<Integer, Cliente>)getIntent().getSerializableExtra(Registro.MAP_TODOS_LOS_CLIENTES);
         inicializarComponente();
+        if(savedInstanceState!=null){
+           /* fragmentActual=savedInstanceState.getInt("fragmentActual");
+            fragmentoActualVista= (Fragment) savedInstanceState.getSerializable("fragmentoActualVista");
+            categoriasFragment= (CategoriasFragment) savedInstanceState.getSerializable("categoriasFragment");
+            productosFragment= (ProductosFragment) savedInstanceState.getSerializable("productosFragment");
+            crearPedidoFragment= (CrearPedidoFragment) savedInstanceState.getSerializable("crearPedidoFragment");
+            buscarProductoFragment= (BuscarProductoFragment) savedInstanceState.getSerializable("buscarProductoFragment");*/
+        }
     }
+
+
 
     private void inicializarComponente() {
         btnCliente=(ImageButton)findViewById(R.id.btn_cliente);
         btnCliente.setOnTouchListener(this);
         btnProducto=(ImageButton)findViewById(R.id.btn_producto);
         btnProducto.setOnTouchListener(this);
-        cargarFragmento(getCategoriasFragment());
+        if(fragmentActual!=null)
+            cargarFragmento(fragmentoActualVista,fragmentActual);
+        else
+            cargarFragmento(getCategoriasFragment(),Utilidades.idFragmentCategoria);
+
     }
 
-    private void cargarFragmento(Fragment fragment) {
+
+
+    private void cargarFragmento(Fragment fragmentNuevo, int fragmentActual) {
+        this.fragmentActual=fragmentActual;
+        fragmentoActualVista=fragmentNuevo;
         FragmentManager fragmentManager=getFragmentManager();
         FragmentTransaction transaction=fragmentManager.beginTransaction();
-        transaction.replace(R.id.contenedor, fragment);
+        transaction.replace(R.id.contenedor, fragmentNuevo);
         transaction.commit();
     }
 
@@ -92,16 +115,16 @@ public class Principal extends ActionBarActivity implements View.OnTouchListener
     }
 
 
-    public CrearPedidoFragment getCrearPedidoFragment(Map<Integer,Categoria> todosProductos, Cliente c) {
+    public CrearPedidoFragment getCrearPedidoFragment(Map<Integer,Categoria> todosProductos, Cliente cliente, Cesta cesta) {
         if(crearPedidoFragment==null){
-            crearPedidoFragment=CrearPedidoFragment.newInstance(todosProductos,c);
+            crearPedidoFragment=CrearPedidoFragment.newInstance(todosProductos,cliente, cesta,configuracion);
         }
         return crearPedidoFragment;
     }
 
     public ElegirCombinationFragment getElegirCombinationFragment(Producto p) {
         if(elegirCombinationFragment==null){
-            elegirCombinationFragment=ElegirCombinationFragment.newInstance(p);
+            elegirCombinationFragment=ElegirCombinationFragment.newInstance(p,configuracion);
         }
         return elegirCombinationFragment;
     }
@@ -155,10 +178,10 @@ public class Principal extends ActionBarActivity implements View.OnTouchListener
     private void cambiarFragmento(View view) {
         switch (view.getId()){
             case R.id.btn_cliente:
-                cargarFragmento(getTodosClientesFragment());
+                cargarFragmento(getTodosClientesFragment(),Utilidades.idFragmentClientes);
                 break;
             case R.id.btn_producto:
-                cargarFragmento(getCategoriasFragment());
+                cargarFragmento(getCategoriasFragment(),Utilidades.idFragmentCategoria);
                 break;
         }
     }
@@ -169,7 +192,7 @@ public class Principal extends ActionBarActivity implements View.OnTouchListener
         Map<Integer,Categoria> todosProductos;
         switch (idFragment){
             case Utilidades.idFragmentProducto:
-                cargarFragmento(getProductosFragment((Categoria)dato[0]));
+                cargarFragmento(getProductosFragment((Categoria)dato[0]),Utilidades.idFragmentProducto);
                 break;
             case Utilidades.idFragmentCategoria:
                 break;
@@ -181,24 +204,66 @@ public class Principal extends ActionBarActivity implements View.OnTouchListener
                 startActivity(i);
                 break;
             case Utilidades.idFragmentClientes:
+                cargarFragmento(getTodosClientesFragment(),Utilidades.idFragmentClientes);
+                crearPedidoFragment=null;
                 break;
             case Utilidades.idFragmentClienteEspecifico:
                 break;
             case Utilidades.idFragmentCrearPedido:
                 Cliente c=(Cliente)dato[0];
                 todosProductos=(Map<Integer,Categoria>) dato[1];
-                cargarFragmento(getCrearPedidoFragment(todosProductos, c));
+                cargarFragmento(getCrearPedidoFragment(todosProductos, c, new Cesta(Utilidades.todosProductos(todosProductos))),Utilidades.idFragmentCrearPedido);
                 break;
             case Utilidades.idFragmentBuscarProducto:
                 todosProductos=(Map<Integer,Categoria>) dato[0];
-                cargarFragmento(getBuscarProductoFragment(todosProductos));
+                cargarFragmento(getBuscarProductoFragment(todosProductos), Utilidades.idFragmentBuscarProducto);
                 break;
             case Utilidades.idFragmentElegirCombinacion:
-                cargarFragmento(getElegirCombinationFragment((Producto) dato[0]));
+                cargarFragmento(getElegirCombinationFragment((Producto) dato[0]), Utilidades.idFragmentElegirCombinacion);
                 break;
+            case Utilidades.idModificarCesta:
+                int cantidadReservar=(Integer)dato[1];
+                if(cantidadReservar!=0){
+                    crearPedidoFragment.getCesta().addProducto((Combinacion)dato[0],(Integer)dato[1]);
+                }
+                elegirCombinationFragment=null;
+                cargarFragmento(crearPedidoFragment,  Utilidades.idModificarCesta);
 
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        switch (fragmentActual){
+            case Utilidades.idFragmentProducto:
+                cargarFragmento(categoriasFragment,Utilidades.idFragmentCategoria);
+                break;
+            case Utilidades.idFragmentClientes:
+                super.onBackPressed();
+                break;
+            case Utilidades.idFragmentCrearPedido:
+                cargarFragmento(todosClientesFragment,Utilidades.idFragmentClientes);
+                break;
+            case Utilidades.idFragmentBuscarProducto:
+                cargarFragmento(crearPedidoFragment,Utilidades.idFragmentCrearPedido);
+                break;
+            case Utilidades.idFragmentElegirCombinacion:
+                cargarFragmento(buscarProductoFragment,Utilidades.idFragmentBuscarProducto);
+                break;
+            case Utilidades.idModificarCesta:
+                cargarFragmento(todosClientesFragment,Utilidades.idFragmentClientes);
+                break;
+            default:
+                super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("fragmentActual", fragmentActual);
+
     }
 
 
